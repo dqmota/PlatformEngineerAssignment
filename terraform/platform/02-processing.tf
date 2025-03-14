@@ -22,3 +22,10 @@ resource "google_storage_bucket_iam_binding" "processing_admin" {
     "serviceAccount:project-service-account@${data.google_project.processing.project_id}.iam.gserviceaccount.com"
   ]
 }
+
+# https://cloud.google.com/dataflow/docs/concepts/access-control#roles
+resource "google_project_iam_member" "processing_dataflow_worker" {
+  project = data.google_project.processing.project_id
+  role    = "roles/dataflow.worker"
+  member  = "serviceAccount:project-service-account@${data.google_project.processing.project_id}.iam.gserviceaccount.com"
+}
