@@ -2,6 +2,10 @@ data "google_project" "processing" {
   project_id = "${var.project_configs.prefix}-${local.stages.processing.suffix}-${data.google_organization.default.org_id}"
 }
 
+data "google_service_account" "processing" {
+  account_id = "project-service-account@${data.google_project.processing.project_id}.iam.gserviceaccount.com"
+}
+
 resource "google_storage_bucket" "processing_default" {
   project = data.google_project.processing.project_id
 
@@ -19,7 +23,7 @@ resource "google_storage_bucket_iam_binding" "processing_admin" {
   bucket = google_storage_bucket.processing_default.name
   role   = "roles/storage.admin"
   members = [
-    "serviceAccount:project-service-account@${data.google_project.processing.project_id}.iam.gserviceaccount.com"
+    "serviceAccount:${data.google_service_account.processing.email}"
   ]
 }
 
@@ -27,5 +31,5 @@ resource "google_storage_bucket_iam_binding" "processing_admin" {
 resource "google_project_iam_member" "processing_dataflow_worker" {
   project = data.google_project.processing.project_id
   role    = "roles/dataflow.worker"
-  member  = "serviceAccount:project-service-account@${data.google_project.processing.project_id}.iam.gserviceaccount.com"
+  member  = "serviceAccount:${data.google_service_account.processing.email}"
 }
