@@ -1,0 +1,5 @@
+organization_domain = "my.domain"
+
+project_configs = {
+  prefix          = "my-taxi"
+}
