@@ -17,3 +17,22 @@ module "security_project" {
     "cloudkms.googleapis.com"
   ]))
 }
+
+resource "google_kms_key_ring" "default" {
+  name     = "centralized-keyring"
+  project  = module.security_project.project_id
+  location = data.google_client_config.current.region
+}
+
+resource "google_kms_crypto_key" "service-key" {
+  for_each = toset(local.services_kms)
+
+  name            = "${each.key}-key"
+  key_ring        = google_kms_key_ring.default.id
+  rotation_period = "7776000s" # 90 days
+  purpose         = "ENCRYPT_DECRYPT"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}

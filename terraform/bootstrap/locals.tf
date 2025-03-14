@@ -40,4 +40,11 @@ locals {
       ]
     }
   }
+
+  services_kms = [
+    "pubsub",
+    "storage",
+    "bigquery",
+    "compute",
+  ]
 }
