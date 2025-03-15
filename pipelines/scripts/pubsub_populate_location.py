@@ -35,6 +35,8 @@ def publish_message(project_id, topic_name, dataset):
         project_id: Google Cloud Project ID
         topic_name: Pub/Sub topic name
         dataset: Sample dataset
+    
+    Reference: https://cloud.google.com/pubsub/docs/publisher
     """
     publisher = pubsub_v1.PublisherClient()
     topic_path = publisher.topic_path(project_id, topic_name)
