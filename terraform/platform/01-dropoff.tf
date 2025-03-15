@@ -60,6 +60,7 @@ resource "google_pubsub_subscription" "dropoff_location_service" {
     bucket = google_storage_bucket.dropoff_location_service.name
 
     filename_datetime_format = "YYYY/MM/DD/hh/mm_ssZ"
+    filename_suffix = ".avro"
 
     max_duration = "300s"
     max_messages = 1000
