@@ -26,3 +26,9 @@ resource "google_bigquery_dataset_iam_binding" "landing_data_editor" {
     "serviceAccount:${data.google_service_account.processing.email}",
   ]
 }
+
+resource "google_project_iam_member" "landing_job_creator" {
+  project = data.google_project.landing.project_id
+  role    = "roles/bigquery.user"
+  member  = "serviceAccount:${data.google_service_account.processing.email}"
+}
