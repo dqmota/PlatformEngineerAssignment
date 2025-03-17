@@ -56,6 +56,12 @@ resource "google_storage_bucket_iam_binding" "processing_admin" {
 }
 
 # https://cloud.google.com/dataflow/docs/concepts/access-control#roles
+resource "google_project_iam_member" "processing_impersonate_itself" {
+  project = data.google_project.processing.project_id
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${data.google_service_account.processing.email}"
+}
+
 resource "google_project_iam_member" "processing_dataflow_admin" {
   project = data.google_project.processing.project_id
   role    = "roles/dataflow.admin"
